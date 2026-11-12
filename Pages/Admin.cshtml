@@ -161,6 +161,17 @@
             <div><strong>Expiry:</strong> @(Model.SelectedUser.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</div>
             <div><strong>Status:</strong> @(Model.SelectedUser.IsActive ? "Active" : "Inactive")</div>
             <div><strong>Payment Due:</strong> @(Model.SelectedUser.IsActive && Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry >= DateTime.UtcNow ? "No Due" : "Due")</div>
+            @{
+                var overdueMonths = 0;
+                if (Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry < DateTime.UtcNow)
+                {
+                    overdueMonths = (int)Math.Ceiling((DateTime.UtcNow - Model.SelectedUser.SubscriptionExpiry.Value).TotalDays / 30.0);
+                    if (overdueMonths < 1) overdueMonths = 1;
+                }
+                var dueAmount = overdueMonths * Model.GetPlanPrice(Model.SelectedUser.Plan);
+            }
+            <div><strong>Months Overdue:</strong> @overdueMonths</div>
+            <div><strong>Amount Due:</strong> @dueAmount.ToString("0.00")</div>
             <div><strong>Total Paid:</strong> @(Model.TotalPaid.ContainsKey(Model.SelectedUser.Id) ? Model.TotalPaid[Model.SelectedUser.Id].ToString("0.00") : "0.00")</div>
         </div>
         <h4 style="margin-top:16px;">Monthly Plan History</h4>
