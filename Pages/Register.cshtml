@@ -1,0 +1,19 @@
+@page
+@model DataSearch.Pages.RegisterModel
+<h2>Register</h2>
+<form method="post">
+    <div class="form-row"><label>Username</label><input asp-for="Input.UserName" /></div>
+    <div class="form-row"><label>Full Name</label><input asp-for="Input.FullName" /></div>
+    <div class="form-row"><label>Email</label><input asp-for="Input.Email" /></div>
+    <div class="form-row"><label>Password</label><input asp-for="Input.Password" type="password" /></div>
+    <div class="form-row"><label>Plan</label>
+        <select asp-for="Input.Plan">
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+            <option value="Agency">Agency</option>
+        </select>
+    </div>
+    <div style="color:red">@Model.ErrorMessage</div>
+    <button type="submit">Register</button>
+</form>
+<p>Already have account? <a href="/Login">Login</a></p>

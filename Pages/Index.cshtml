@@ -1,0 +1,12 @@
+﻿@page
+@model IndexModel
+<h2>Welcome to DataSearch</h2>
+<p>Simple search platform for phone/owner records.</p>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <p><a href="/Search">Go to Search</a></p>
+}
+else
+{
+    <p><a href="/Login">Login</a> or <a href="/Register">Register</a> to search.</p>
+}
