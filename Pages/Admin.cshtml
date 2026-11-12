@@ -45,11 +45,21 @@
                 <td>@u.Plan</td>
                 <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
                 <td>@(Model.TotalPaid.ContainsKey(u.Id) ? Model.TotalPaid[u.Id].ToString("0.00") : "0.00")</td>
-                <td>@(u.IsActive ? "Yes" : "No")</td>
+                <td>
+                    @if (u.IsActive) { <span style="color:#059669;font-weight:600;">Active</span> }
+                    else { <span style="color:#dc2626;font-weight:600;">Inactive</span> }
+                </td>
                 <td>
                     <form method="post" asp-page-handler="Toggle" style="display:inline;">
                         <input type="hidden" name="userId" value="@u.Id" />
-                        <button type="submit">@(u.IsActive ? "Deactivate" : "Reactivate")</button>
+                        @if (u.IsActive)
+                        {
+                            <button type="submit" style="background:#dc2626;">Deactivate</button>
+                        }
+                        else
+                        {
+                            <button type="submit" style="background:#059669;">Reactivate</button>
+                        }
                     </form>
                     <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
                         <input type="hidden" name="userId" value="@u.Id" />

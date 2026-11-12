@@ -1,14 +1,22 @@
 @page
 @model DataSearch.Pages.LoginModel
-<div class="center">
-<h2>Login</h2>
-<div class="form-box">
-<form method="post">
-    <div class="form-row"><label>Username</label><input asp-for="Input.UserName" /></div>
-    <div class="form-row"><label>Password</label><input asp-for="Input.Password" type="password" /></div>
-    <div style="color:red">@Model.ErrorMessage</div>
-    <button type="submit">Login</button>
-</form>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-logo">DataSearch</div>
+        <h2>Welcome back</h2>
+        <p class="auth-sub">Sign in to access the records search platform</p>
+        <form method="post">
+            <div class="form-row">
+                <label>Username</label>
+                <input asp-for="Input.UserName" placeholder="Enter username" />
+            </div>
+            <div class="form-row">
+                <label>Password</label>
+                <input asp-for="Input.Password" type="password" placeholder="Enter password" />
+            </div>
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage)) { <div class="msg">@Model.ErrorMessage</div> }
+            <button type="submit" class="auth-btn">Sign In</button>
+        </form>
+        <p class="auth-foot">No account? <a href="/Register">Create one</a></p>
+    </div>
 </div>
-</div>
-<p>No account? <a href="/Register">Register</a></p>

@@ -126,3 +126,12 @@ tr:hover td { background: #eff6ff; }
 .hero { text-align: center; padding: 40px 20px; }
 .hero h1 { font-size: 34px; color: #0c4a6e; margin: 0 0 10px; }
 .hero p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto 20px; }
+.auth-wrap { min-height: 70vh; display:flex; align-items:center; justify-content:center; padding: 20px; }
+.auth-card { background: var(--card); width: 100%; max-width: 420px; padding: 40px 34px; border-radius: 16px; box-shadow: 0 10px 40px rgba(15,23,42,.12); border: 1px solid var(--border); text-align: center; }
+.auth-logo { font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 6px; letter-spacing: .5px; }
+.auth-card h2 { color: var(--text); font-size: 22px; margin-bottom: 4px; }
+.auth-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+.auth-card .form-row { text-align: left; }
+.auth-btn { width: 100%; margin-top: 6px; padding: 12px; font-size: 15px; }
+.auth-foot { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.auth-foot a { color: var(--primary); font-weight: 600; text-decoration: none; }
