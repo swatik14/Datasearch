@@ -121,7 +121,7 @@ public class AdminModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostExtendAsync(string userId)
+    public async Task<IActionResult> OnPostExtendAsync(string userId, decimal amount)
     {
         var user = await _um.FindByIdAsync(userId);
         if (user != null)
@@ -130,7 +130,22 @@ public class AdminModel : PageModel
             user.SubscriptionExpiry = baseDate.AddMonths(1);
             user.IsActive = true;
             await _um.UpdateAsync(user);
-            Message = "Extended by 1 month.";
+            if (amount > 0)
+            {
+                _db.Payments.Add(new Payment
+                {
+                    UserId = userId,
+                    Amount = amount,
+                    Note = "Extension 1 month",
+                    PaidOn = DateTime.UtcNow
+                });
+                await _db.SaveChangesAsync();
+                Message = "Extended by 1 month and payment recorded.";
+            }
+            else
+            {
+                Message = "Extended by 1 month.";
+            }
         }
         await LoadUsersAsync();
         return Page();
