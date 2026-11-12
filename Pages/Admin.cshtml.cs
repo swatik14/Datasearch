@@ -16,7 +16,9 @@ public class AdminModel : PageModel
 
     public List<ApplicationUser> Users { get; set; } = new();
     public Dictionary<string, decimal> TotalPaid { get; set; } = new();
+    public List<Payment> RecentPayments { get; set; } = new();
     [BindProperty(SupportsGet = true)] public string? ViewId { get; set; }
+    [BindProperty(SupportsGet = true)] public string Tab { get; set; } = "users";
     [BindProperty(SupportsGet = true)] public string? Query { get; set; }
     [BindProperty(SupportsGet = true)] public string TypeFilter { get; set; } = "All";
     [BindProperty(SupportsGet = true)] public string StatusFilter { get; set; } = "All";
@@ -79,11 +81,14 @@ public class AdminModel : PageModel
     public async Task OnGetAsync()
     {
         await LoadUsersAsync();
+        if (Tab == "overview")
+            RecentPayments = await _db.Payments.Include(p => p.User).OrderByDescending(p => p.PaidOn).Take(5).ToListAsync();
         if (!string.IsNullOrWhiteSpace(ViewId))
         {
             SelectedUser = await _um.FindByIdAsync(ViewId);
             if (SelectedUser != null)
                 SelectedPayments = await _db.Payments.Where(p => p.UserId == ViewId).OrderByDescending(p => p.PaidOn).ToListAsync();
+            Tab = "details";
         }
     }
 
