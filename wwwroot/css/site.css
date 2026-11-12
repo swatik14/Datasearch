@@ -9,10 +9,10 @@ h2 { color:#1f3864; margin-top:0; }
 .form-row { margin-bottom:12px; display:flex; align-items:center; }
 .form-row label { width:170px; font-weight:600; }
 .form-row input, .form-row select { flex:1; padding:8px; border:1px solid #ccc; border-radius:4px; }
-.search-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-.search-field { display:flex; flex-direction:column; min-width:130px; }
-.search-field label { font-size:12px; font-weight:600; margin-bottom:4px; }
-.search-field input, .search-field select { padding:8px; border:1px solid #ccc; border-radius:4px; }
+.search-bar { display:flex; flex-wrap:nowrap; gap:6px; align-items:flex-end; overflow:visible; }
+.search-field { display:flex; flex-direction:column; min-width:88px; flex:0 1 auto; }
+.search-field label { font-size:11px; font-weight:600; margin-bottom:3px; white-space:nowrap; }
+.search-field input, .search-field select { padding:5px 6px; border:1px solid #ccc; border-radius:4px; width:100%; font-size:12px; }
 button { background:#1f3864; color:#fff; border:none; padding:9px 18px; border-radius:4px; cursor:pointer; font-size:14px; }
 button:hover { background:#162a4d; }
 a.btn { display:inline-block; background:#1f3864; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; }
