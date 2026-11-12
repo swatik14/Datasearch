@@ -98,7 +98,7 @@
 <div class="card">
     <table>
         <thead>
-            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Paid Total</th><th>Active</th><th>Payment Due</th><th>Actions</th></tr>
+            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Paid Total</th><th>Active</th><th>Actions</th></tr>
         </thead>
         <tbody>
         @foreach (var u in Model.Users)
@@ -113,16 +113,6 @@
                 <td>
                     @if (u.IsActive) { <span style="color:#059669;font-weight:600;">Active</span> }
                     else { <span style="color:#dc2626;font-weight:600;">Inactive</span> }
-                </td>
-                <td>
-                    @if (u.IsActive && u.SubscriptionExpiry.HasValue && u.SubscriptionExpiry >= DateTime.UtcNow)
-                    {
-                        <span style="color:#059669;font-weight:600;">No Due</span>
-                    }
-                    else
-                    {
-                        <span style="color:#dc2626;font-weight:600;">Due</span>
-                    }
                 </td>
                 <td>
                     <form method="post" asp-page-handler="Toggle" style="display:inline;">
