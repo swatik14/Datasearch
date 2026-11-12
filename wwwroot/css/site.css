@@ -11,9 +11,24 @@
 html, body { margin:0; padding:0; }
 body {
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: var(--bg);
+  background: linear-gradient(120deg, #dbeafe, #f1f5f9, #e0e7ff, #f8fafc);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
   color: var(--text);
   line-height: 1.5;
+  min-height: 100vh;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+#bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(37,99,235,.16), transparent 45%);
 }
 header {
   background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -32,7 +47,7 @@ header .brand span { opacity: .8; font-weight: 400; font-size: 13px; margin-left
 header .user { display:flex; align-items:center; gap:14px; font-size:14px; }
 header a { color:#fff; text-decoration:none; padding:6px 14px; border-radius:6px; background: rgba(255,255,255,.15); transition: background .2s; }
 header a:hover { background: rgba(255,255,255,.28); }
-main { padding: 28px; max-width: 1280px; margin: 0 auto; }
+main { padding: 28px; max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; }
 h2 { color: #1e3a8a; margin: 0 0 18px; font-size: 24px; font-weight: 700; }
 .card {
   background: var(--card);
