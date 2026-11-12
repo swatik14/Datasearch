@@ -39,7 +39,7 @@
         @foreach (var u in Model.Users)
         {
             <tr>
-                <td>@u.UserName</td>
+                <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.UserName</a></td>
                 <td>@u.FullName</td>
                 <td>@u.Role</td>
                 <td>@u.Plan</td>
@@ -70,9 +70,53 @@
                         <input type="number" step="0.01" name="Payment.Amount" placeholder="Amt" style="width:70px;padding:4px;" required />
                         <button type="submit" style="background:#059669;">Pay</button>
                     </form>
+                    @if (u.Role != "Admin")
+                    {
+                        <form method="post" asp-page-handler="Delete" style="display:inline;margin-left:4px;" onsubmit="return confirm('Delete this user?');">
+                            <input type="hidden" name="userId" value="@u.Id" />
+                            <button type="submit" style="background:#991b1b;">Delete</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }
         </tbody>
     </table>
 </div>
+
+@if (Model.SelectedUser != null)
+{
+    <div class="card" style="margin-top:18px;">
+        <h3 style="margin-top:0;">Customer Details - @Model.SelectedUser.UserName</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;">
+            <div><strong>Full Name:</strong> @Model.SelectedUser.FullName</div>
+            <div><strong>Email:</strong> @Model.SelectedUser.Email</div>
+            <div><strong>Type:</strong> @Model.SelectedUser.Role</div>
+            <div><strong>Plan:</strong> @Model.SelectedUser.Plan</div>
+            <div><strong>Expiry:</strong> @(Model.SelectedUser.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</div>
+            <div><strong>Status:</strong> @(Model.SelectedUser.IsActive ? "Active" : "Inactive")</div>
+            <div><strong>Total Paid:</strong> @(Model.TotalPaid.ContainsKey(Model.SelectedUser.Id) ? Model.TotalPaid[Model.SelectedUser.Id].ToString("0.00") : "0.00")</div>
+        </div>
+        <h4 style="margin-top:16px;">Payment History</h4>
+        @if (Model.SelectedPayments.Any())
+        {
+            <table>
+                <thead><tr><th>Date</th><th>Amount</th><th>Note</th></tr></thead>
+                <tbody>
+                @foreach (var p in Model.SelectedPayments)
+                {
+                    <tr>
+                        <td>@p.PaidOn.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@p.Amount.ToString("0.00")</td>
+                        <td>@p.Note</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="meta">No payments recorded.</p>
+        }
+    </div>
+}

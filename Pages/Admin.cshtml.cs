@@ -16,6 +16,9 @@ public class AdminModel : PageModel
 
     public List<ApplicationUser> Users { get; set; } = new();
     public Dictionary<string, decimal> TotalPaid { get; set; } = new();
+    [BindProperty(SupportsGet = true)] public string? ViewId { get; set; }
+    public ApplicationUser? SelectedUser { get; set; }
+    public List<Payment> SelectedPayments { get; set; } = new();
     [BindProperty] public NewUserInput NewUser { get; set; } = new();
     [BindProperty] public PaymentInput Payment { get; set; } = new();
     public string? Message { get; set; }
@@ -47,6 +50,12 @@ public class AdminModel : PageModel
     public async Task OnGetAsync()
     {
         await LoadUsersAsync();
+        if (!string.IsNullOrWhiteSpace(ViewId))
+        {
+            SelectedUser = await _um.FindByIdAsync(ViewId);
+            if (SelectedUser != null)
+                SelectedPayments = await _db.Payments.Where(p => p.UserId == ViewId).OrderByDescending(p => p.PaidOn).ToListAsync();
+        }
     }
 
     public async Task<IActionResult> OnPostCreateAsync()
@@ -117,6 +126,21 @@ public class AdminModel : PageModel
         });
         await _db.SaveChangesAsync();
         Message = "Payment recorded.";
+        await LoadUsersAsync();
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync(string userId)
+    {
+        var user = await _um.FindByIdAsync(userId);
+        if (user != null && user.Role != "Admin")
+        {
+            var pays = _db.Payments.Where(p => p.UserId == userId);
+            _db.Payments.RemoveRange(pays);
+            await _db.SaveChangesAsync();
+            await _um.DeleteAsync(user);
+            Message = "Customer deleted.";
+        }
         await LoadUsersAsync();
         return Page();
     }
