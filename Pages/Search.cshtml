@@ -5,22 +5,24 @@
 
 <div class="form-box">
 <form method="post">
-    <div class="form-row">
-        <label>State</label>
-        <select asp-for="State">
-            <option value="">-- select --</option>
-            <option value="Karnataka">Karnataka</option>
-            <option value="Andhra Pradesh">Andhra Pradesh</option>
-        </select>
+    <div class="search-bar">
+        <div class="search-field">
+            <label>State</label>
+            <select asp-for="State">
+                <option value="">All</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+            </select>
+        </div>
+        <div class="search-field"><label>Phone Number</label><input asp-for="PhoneNumber" /></div>
+        <div class="search-field"><label>Name</label><input asp-for="OwnerName" /></div>
+        <div class="search-field"><label>Father Name</label><input asp-for="FatherName" /></div>
+        <div class="search-field"><label>Address</label><input asp-for="Address" /></div>
+        <div class="search-field"><label>ID (Aadhaar)</label><input asp-for="AadhaarId" /></div>
+        <div class="search-field"><label>Alternative Number</label><input asp-for="AlternativeNumber" /></div>
+        <div class="search-field"><label>Circle</label><input asp-for="Circle" /></div>
+        <button type="submit">Search</button>
     </div>
-    <div class="form-row"><label>Phone Number</label><input asp-for="PhoneNumber" /></div>
-    <div class="form-row"><label>Name</label><input asp-for="OwnerName" /></div>
-    <div class="form-row"><label>Father Name</label><input asp-for="FatherName" /></div>
-    <div class="form-row"><label>Address</label><input asp-for="Address" /></div>
-    <div class="form-row"><label>ID (Aadhaar)</label><input asp-for="AadhaarId" /></div>
-    <div class="form-row"><label>Alternative Number</label><input asp-for="AlternativeNumber" /></div>
-    <div class="form-row"><label>Circle</label><input asp-for="Circle" /></div>
-    <button type="submit">Search</button>
 </form>
 </div>
 
