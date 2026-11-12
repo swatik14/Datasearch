@@ -58,7 +58,7 @@ foreach (var row in ReadCsv(csvPath))
 {
     if (row.Length < 8) continue;
     // skip header
-    if (count == 0 && row[0].Equals("State", StringComparison.OrdinalIgnoreCase)) { count++; continue; }
+    if (count == 0 && row[0].Equals("State", StringComparison.OrdinalIgnoreCase)) { continue; }
     pState.Value = row[0];
     pPhone.Value = row[1];
     pName.Value = row[2];
