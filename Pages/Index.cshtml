@@ -5,7 +5,8 @@
     <p>Search phone and owner records across Karnataka and Andhra Pradesh. Fast, simple, subscription-based.</p>
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <a class="btn" href="/Search">Go to Search</a>
+        @if (User.IsInRole("Admin")) { <a class="btn" href="/Admin">Manage Users</a> }
+        else { <a class="btn" href="/Search">Go to Search</a> }
     }
     else
     {

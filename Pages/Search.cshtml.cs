@@ -47,6 +47,7 @@ public class SearchModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
+        if (User.IsInRole("Admin")) return Redirect("/Admin");
         if (!await CheckSubscriptionAsync()) return Page();
 
         // Only search if at least one criterion or state selected
