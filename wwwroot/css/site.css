@@ -1,17 +1,17 @@
 :root {
-  --primary: #7c3aed;
-  --primary-dark: #6d28d9;
-  --bg: #faf5ff;
+  --primary: #0284c7;
+  --primary-dark: #0369a1;
+  --bg: #f0f9ff;
   --card: #ffffff;
-  --text: #1e1b4b;
-  --muted: #6b7280;
-  --border: #e9d5ff;
+  --text: #0c4a6e;
+  --muted: #475569;
+  --border: #bae6fd;
 }
 * { box-sizing: border-box; }
 html, body { margin:0; padding:0; }
 body {
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: linear-gradient(120deg, #ede9fe, #faf5ff, #e9d5ff, #f5f3ff);
+  background: linear-gradient(120deg, #e0f2fe, #f0f9ff, #cffafe, #f0f9ff);
   background-size: 300% 300%;
   animation: gradientShift 18s ease infinite;
   color: var(--text);
@@ -25,7 +25,7 @@ body {
 }
 
 header {
-  background: linear-gradient(135deg, #4c1d95, #7c3aed);
+  background: linear-gradient(135deg, #0c4a6e, #0284c7);
   color: #fff;
   padding: 14px 28px;
   display: flex;
@@ -42,7 +42,7 @@ header .user { display:flex; align-items:center; gap:14px; font-size:14px; }
 header a { color:#fff; text-decoration:none; padding:6px 14px; border-radius:6px; background: rgba(255,255,255,.15); transition: background .2s; }
 header a:hover { background: rgba(255,255,255,.28); }
 main { padding: 28px; max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; }
-h2 { color: #4c1d95; margin: 0 0 18px; font-size: 24px; font-weight: 700; }
+h2 { color: #0c4a6e; margin: 0 0 18px; font-size: 24px; font-weight: 700; }
 .card {
   background: var(--card);
   border-radius: 12px;
@@ -124,5 +124,5 @@ tr:hover td { background: #eff6ff; }
   box-shadow: 0 0 0 3px rgba(37,99,235,.15);
 }
 .hero { text-align: center; padding: 40px 20px; }
-.hero h1 { font-size: 34px; color: #4c1d95; margin: 0 0 10px; }
+.hero h1 { font-size: 34px; color: #0c4a6e; margin: 0 0 10px; }
 .hero p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto 20px; }
