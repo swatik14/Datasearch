@@ -1,10 +1,12 @@
 @page
 @model DataSearch.Pages.LoginModel
 <h2>Login</h2>
+<div class="form-box">
 <form method="post">
     <div class="form-row"><label>Username</label><input asp-for="Input.UserName" /></div>
     <div class="form-row"><label>Password</label><input asp-for="Input.Password" type="password" /></div>
     <div style="color:red">@Model.ErrorMessage</div>
     <button type="submit">Login</button>
 </form>
+</div>
 <p>No account? <a href="/Register">Register</a></p>

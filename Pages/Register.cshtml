@@ -1,6 +1,7 @@
 @page
 @model DataSearch.Pages.RegisterModel
 <h2>Register</h2>
+<div class="form-box">
 <form method="post">
     <div class="form-row"><label>Username</label><input asp-for="Input.UserName" /></div>
     <div class="form-row"><label>Full Name</label><input asp-for="Input.FullName" /></div>
@@ -16,4 +17,5 @@
     <div style="color:red">@Model.ErrorMessage</div>
     <button type="submit">Register</button>
 </form>
+</div>
 <p>Already have account? <a href="/Login">Login</a></p>
