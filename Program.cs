@@ -100,6 +100,12 @@ using (var scope = app.Services.CreateScope())
         um.CreateAsync(admin, "admin123").Wait();
         um.AddToRoleAsync(admin, "Admin").Wait();
     }
+    if (um.FindByNameAsync("dueuser").Result == null)
+    {
+        var due = new ApplicationUser { UserName = "dueuser", Email = "due@local", FullName = "Due Customer", Role = "Customer", Plan = "Monthly", IsActive = true, SubscriptionExpiry = DateTime.UtcNow.AddMonths(-5) };
+        um.CreateAsync(due, "pass123").Wait();
+        um.AddToRoleAsync(due, "Customer").Wait();
+    }
 }
 
 app.Run();
