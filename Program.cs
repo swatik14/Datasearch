@@ -53,7 +53,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
-    if (db.Records.Count() < 10)
+    if (db.Records.Count() < 100)
     {
         db.Records.AddRange(
             new Record { State="Karnataka", PhoneNumber="9876543210", OwnerName="Ravi Kumar", FatherName="Shivappa", Address="Bangalore", AadhaarId="123456789012", AlternativeNumber="9999999999", Circle="Airtel" },
@@ -67,6 +67,26 @@ using (var scope = app.Services.CreateScope())
             new Record { State="Andhra Pradesh", PhoneNumber="9440123456", OwnerName="Bhavani Reddy", FatherName="Narayana Reddy", Address="Tirupati", AadhaarId="334455667788", AlternativeNumber="4455667788", Circle="Airtel" },
             new Record { State="Andhra Pradesh", PhoneNumber="9392012345", OwnerName="Chaitanya Kumar", FatherName="Prasad", Address="Nellore", AadhaarId="223344556677", AlternativeNumber="3344556677", Circle="VI" }
         );
+        var rnd = new Random(42);
+        var firstNames = new[]{"Arun","Divya","Kiran","Meena","Suresh","Lakshmi","Ravi","Priya","Anil","Kavya","Ramesh","Bhavani","Chaitanya","Nagarjuna","Sunita","Vijay","Deepa","Manoj","Pooja","Rahul"};
+        var lastNames = new[]{"Kumar","Reddy","Gowda","Sharma","Devi","Babu","Rao","Nair","Desai","Patel"};
+        var fathers = new[]{"Shivappa","Ramaiah","Venkatesh","Krishna","Mahesh","Vasant","Rajesh","Srinivas","Narayana","Prasad"};
+        var addresses = new[]{"Bangalore","Mysore","Hubli","Belgaum","Mangalore","Vijayawada","Guntur","Visakhapatnam","Tirupati","Nellore","Davangere","Shimoga","Bellary","Kurnool","Kadapa"};
+        var circles = new[]{"Airtel","Jio","VI","BSNL"};
+        var states = new[]{"Karnataka","Andhra Pradesh"};
+        for (int i = 0; i < 90; i++)
+        {
+            db.Records.Add(new Record {
+                State = states[rnd.Next(states.Length)],
+                PhoneNumber = "9" + rnd.Next(100000000, 999999999).ToString(),
+                OwnerName = firstNames[rnd.Next(firstNames.Length)] + " " + lastNames[rnd.Next(lastNames.Length)],
+                FatherName = fathers[rnd.Next(fathers.Length)],
+                Address = addresses[rnd.Next(addresses.Length)],
+                AadhaarId = rnd.Next(100000000, 999999999).ToString() + rnd.Next(100, 999).ToString(),
+                AlternativeNumber = "9" + rnd.Next(100000000, 999999999).ToString(),
+                Circle = circles[rnd.Next(circles.Length)]
+            });
+        }
         db.SaveChanges();
     }
     // Seed admin
