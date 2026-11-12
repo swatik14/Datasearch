@@ -25,10 +25,15 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        var user = await _um.FindByNameAsync(Input.UserName);
+        if (user != null && !user.IsActive)
+        {
+            ErrorMessage = "Your account has been deactivated. Contact admin.";
+            return Page();
+        }
         var res = await _signIn.PasswordSignInAsync(Input.UserName, Input.Password, true, false);
         if (res.Succeeded)
         {
-            var user = await _um.FindByNameAsync(Input.UserName);
             if (user != null && user.Role == "Admin") return Redirect("/Admin");
             return Redirect("/Search");
         }
