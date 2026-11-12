@@ -1,25 +1,119 @@
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+}
 * { box-sizing: border-box; }
-body { font-family: "Segoe UI", Arial, sans-serif; margin:0; background:#f4f6f9; color:#222; }
-header { padding:12px 24px; background:#1f3864; color:#fff; border-bottom:3px solid #162a4d; }
-header a { color:#fff; text-decoration:none; }
-header a:hover { text-decoration:underline; }
-main { padding:24px; max-width:1180px; margin:0 auto; }
-h2 { color:#1f3864; margin-top:0; }
-.form-box { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.08); max-width:100%; }
-.form-row { margin-bottom:12px; display:flex; align-items:center; }
-.form-row label { width:170px; font-weight:600; }
-.form-row input, .form-row select { flex:1; padding:8px; border:1px solid #ccc; border-radius:4px; }
-.search-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; overflow:visible; }
-.search-field { display:flex; flex-direction:column; min-width:135px; flex:0 1 auto; }
-.search-field label { font-size:12px; font-weight:600; margin-bottom:4px; white-space:nowrap; }
-.search-field input, .search-field select { padding:8px 10px; border:1px solid #ccc; border-radius:4px; width:100%; font-size:14px; }
-button { background:#1f3864; color:#fff; border:none; padding:9px 18px; border-radius:4px; cursor:pointer; font-size:14px; }
-button:hover { background:#162a4d; }
-a.btn { display:inline-block; background:#1f3864; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; }
-table { width:100%; border-collapse:collapse; margin-top:14px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); }
-th, td { border-bottom:1px solid #eee; padding:8px 10px; text-align:left; font-size:13px; }
-th { background:#1f3864; color:#fff; }
-tr:nth-child(even) { background:#fafbfc; }
-tr:hover { background:#eef2f8; }
-.msg { color:#c00; margin:8px 0; }
-.pager a { margin-right:12px; color:#1f3864; text-decoration:none; font-weight:600; }
+html, body { margin:0; padding:0; }
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+header {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: #fff;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header .brand { font-size: 20px; font-weight: 700; letter-spacing: .3px; }
+header .brand span { opacity: .8; font-weight: 400; font-size: 13px; margin-left: 8px; }
+header .user { display:flex; align-items:center; gap:14px; font-size:14px; }
+header a { color:#fff; text-decoration:none; padding:6px 14px; border-radius:6px; background: rgba(255,255,255,.15); transition: background .2s; }
+header a:hover { background: rgba(255,255,255,.28); }
+main { padding: 28px; max-width: 1280px; margin: 0 auto; }
+h2 { color: #1e3a8a; margin: 0 0 18px; font-size: 24px; font-weight: 700; }
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 4px 18px rgba(15,23,42,.06);
+  border: 1px solid var(--border);
+}
+.form-box { background: var(--card); padding: 22px; border-radius: 12px; box-shadow: 0 4px 18px rgba(15,23,42,.06); border: 1px solid var(--border); }
+.search-bar { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+.search-field { display:flex; flex-direction:column; min-width: 150px; flex: 0 1 auto; }
+.search-field label { font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+.search-field input, .search-field select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%;
+  font-size: 14px;
+  background: #f8fafc;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.search-field input:focus, .search-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+button, .btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background .2s, transform .1s, box-shadow .2s;
+  box-shadow: 0 2px 6px rgba(37,99,235,.3);
+}
+button:hover, .btn:hover { background: var(--primary-dark); }
+button:active, .btn:active { transform: translateY(1px); }
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(15,23,42,.06);
+  border: 1px solid var(--border);
+}
+th, td { padding: 11px 14px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+th { background: var(--primary); color: #fff; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .5px; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #f8fafc; }
+tr:hover td { background: #eff6ff; }
+.msg { color: #dc2626; margin: 10px 0; font-weight: 500; }
+.pager { margin-top: 18px; display:flex; gap:12px; align-items:center; }
+.pager a { color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); transition: background .2s; }
+.pager a:hover { background: #eff6ff; }
+.meta { color: var(--muted); font-size: 14px; margin: 12px 0; }
+.center { max-width: 420px; margin: 60px auto; }
+.center h2 { text-align: center; }
+.form-row { margin-bottom: 14px; }
+.form-row label { display:block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--muted); }
+.form-row input, .form-row select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f8fafc;
+  transition: border-color .2s, box-shadow .2s;
+}
+.form-row input:focus, .form-row select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+.hero { text-align: center; padding: 40px 20px; }
+.hero h1 { font-size: 34px; color: #1e3a8a; margin: 0 0 10px; }
+.hero p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto 20px; }

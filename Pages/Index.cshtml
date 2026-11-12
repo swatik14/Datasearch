@@ -1,12 +1,15 @@
 ﻿@page
 @model IndexModel
-<h2>Welcome to DataSearch</h2>
-<p>Simple search platform for phone/owner records.</p>
-@if (User.Identity?.IsAuthenticated == true)
-{
-    <p><a href="/Search">Go to Search</a></p>
-}
-else
-{
-    <p><a href="/Login">Login</a> or <a href="/Register">Register</a> to search.</p>
-}
+<div class="hero">
+    <h1>DataSearch</h1>
+    <p>Search phone and owner records across Karnataka and Andhra Pradesh. Fast, simple, subscription-based.</p>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a class="btn" href="/Search">Go to Search</a>
+    }
+    else
+    {
+        <a class="btn" href="/Login">Login</a>
+        <a class="btn" href="/Register" style="margin-left:8px;background:#475569;">Register</a>
+    }
+</div>

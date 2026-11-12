@@ -1,7 +1,7 @@
 @page
 @model DataSearch.Pages.SearchModel
-<h2>Search</h2>
-@if (!string.IsNullOrEmpty(Model.Message)) { <div style="color:red">@Model.Message</div> }
+<h2>Search Records</h2>
+@if (!string.IsNullOrEmpty(Model.Message)) { <div class="msg">@Model.Message</div> }
 
 <div class="form-box">
 <form method="post">
@@ -28,31 +28,33 @@
 
 @if (Model.Results != null)
 {
-    <p>Found @Model.Total results. Page @Model.CurrentPage</p>
-    <table>
-        <thead>
-            <tr>
-                <th>State</th><th>Phone</th><th>Name</th><th>Father</th><th>Address</th><th>ID</th><th>Alt No</th><th>Circle</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var r in Model.Results)
-        {
-            <tr>
-                <td>@r.State</td>
-                <td>@r.PhoneNumber</td>
-                <td>@r.OwnerName</td>
-                <td>@r.FatherName</td>
-                <td>@r.Address</td>
-                <td>@r.AadhaarId</td>
-                <td>@r.AlternativeNumber</td>
-                <td>@r.Circle</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-    <div class="pager" style="margin-top:10px;">
-        @if (Model.CurrentPage > 1) { <a href="?page=@(Model.CurrentPage-1)&state=@Model.State&phoneNumber=@Model.PhoneNumber&ownerName=@Model.OwnerName&fatherName=@Model.FatherName&address=@Model.Address&aadhaarId=@Model.AadhaarId&alternativeNumber=@Model.AlternativeNumber&circle=@Model.Circle">Prev</a> }
-        @if (Model.HasMore) { <a href="?page=@(Model.CurrentPage+1)&state=@Model.State&phoneNumber=@Model.PhoneNumber&ownerName=@Model.OwnerName&fatherName=@Model.FatherName&address=@Model.Address&aadhaarId=@Model.AadhaarId&alternativeNumber=@Model.AlternativeNumber&circle=@Model.Circle" style="margin-left:10px;">Next</a> }
+    <div class="card" style="margin-top:18px;">
+        <div class="meta">Found <strong>@Model.Total</strong> results &middot; Page @Model.CurrentPage</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>State</th><th>Phone</th><th>Name</th><th>Father</th><th>Address</th><th>ID</th><th>Alt No</th><th>Circle</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var r in Model.Results)
+            {
+                <tr>
+                    <td>@r.State</td>
+                    <td>@r.PhoneNumber</td>
+                    <td>@r.OwnerName</td>
+                    <td>@r.FatherName</td>
+                    <td>@r.Address</td>
+                    <td>@r.AadhaarId</td>
+                    <td>@r.AlternativeNumber</td>
+                    <td>@r.Circle</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div class="pager">
+            @if (Model.CurrentPage > 1) { <a href="?page=@(Model.CurrentPage-1)&state=@Model.State&phoneNumber=@Model.PhoneNumber&ownerName=@Model.OwnerName&fatherName=@Model.FatherName&address=@Model.Address&aadhaarId=@Model.AadhaarId&alternativeNumber=@Model.AlternativeNumber&circle=@Model.Circle">Prev</a> }
+            @if (Model.HasMore) { <a href="?page=@(Model.CurrentPage+1)&state=@Model.State&phoneNumber=@Model.PhoneNumber&ownerName=@Model.OwnerName&fatherName=@Model.FatherName&address=@Model.Address&aadhaarId=@Model.AadhaarId&alternativeNumber=@Model.AlternativeNumber&circle=@Model.Circle">Next</a> }
+        </div>
     </div>
 }
