@@ -9,6 +9,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Record> Records => Set<Record>();
+    public DbSet<Payment> Payments => Set<Payment>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -31,6 +32,13 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             e.Property(r => r.AlternativeNumber).HasMaxLength(20);
             e.Property(r => r.Circle).HasMaxLength(40);
             e.Property(r => r.State).HasMaxLength(40);
+        });
+
+        builder.Entity<Payment>(e =>
+        {
+            e.HasIndex(p => p.UserId);
+            e.Property(p => p.Amount).HasColumnType("decimal(18,2)");
+            e.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
         });
     }
 }

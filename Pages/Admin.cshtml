@@ -33,7 +33,7 @@
 <div class="card">
     <table>
         <thead>
-            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Active</th><th>Actions</th></tr>
+            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Paid Total</th><th>Active</th><th>Actions</th></tr>
         </thead>
         <tbody>
         @foreach (var u in Model.Users)
@@ -44,6 +44,7 @@
                 <td>@u.Role</td>
                 <td>@u.Plan</td>
                 <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
+                <td>@(Model.TotalPaid.ContainsKey(u.Id) ? Model.TotalPaid[u.Id].ToString("0.00") : "0.00")</td>
                 <td>@(u.IsActive ? "Yes" : "No")</td>
                 <td>
                     <form method="post" asp-page-handler="Toggle" style="display:inline;">
@@ -53,6 +54,11 @@
                     <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
                         <input type="hidden" name="userId" value="@u.Id" />
                         <button type="submit" style="background:#475569;">+1 Month</button>
+                    </form>
+                    <form method="post" asp-page-handler="Payment" style="display:inline;margin-left:4px;">
+                        <input type="hidden" name="Payment.UserId" value="@u.Id" />
+                        <input type="number" step="0.01" name="Payment.Amount" placeholder="Amt" style="width:70px;padding:4px;" required />
+                        <button type="submit" style="background:#059669;">Pay</button>
                     </form>
                 </td>
             </tr>
