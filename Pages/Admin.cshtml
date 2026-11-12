@@ -128,8 +128,8 @@
                     </form>
                     <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
                         <input type="hidden" name="userId" value="@u.Id" />
-                        <input type="number" step="0.01" name="amount" placeholder="Amt" style="width:70px;padding:4px;" />
-                        <button type="submit" style="background:#475569;">+1 Month</button>
+                        <input type="number" step="0.01" name="amount" placeholder="@Model.GetPlanPrice(u.Plan).ToString("0")" style="width:70px;padding:4px;" />
+                        <button type="submit" style="background:#475569;">+1 Month (@Model.GetPlanPrice(u.Plan).ToString("0"))</button>
                     </form>
                     <form method="post" asp-page-handler="Payment" style="display:inline;margin-left:4px;">
                         <input type="hidden" name="Payment.UserId" value="@u.Id" />

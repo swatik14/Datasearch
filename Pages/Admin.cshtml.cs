@@ -30,6 +30,8 @@ public class AdminModel : PageModel
     [BindProperty] public PaymentInput Payment { get; set; } = new();
     public string? Message { get; set; }
 
+    public decimal GetPlanPrice(string? plan) => plan == "Yearly" ? 1000m : 100m;
+
     public class PaymentInput
     {
         public string UserId { get; set; } = "";
@@ -130,22 +132,16 @@ public class AdminModel : PageModel
             user.SubscriptionExpiry = baseDate.AddMonths(1);
             user.IsActive = true;
             await _um.UpdateAsync(user);
-            if (amount > 0)
+            var charge = amount > 0 ? amount : GetPlanPrice(user.Plan);
+            _db.Payments.Add(new Payment
             {
-                _db.Payments.Add(new Payment
-                {
-                    UserId = userId,
-                    Amount = amount,
-                    Note = "Extension 1 month",
-                    PaidOn = DateTime.UtcNow
-                });
-                await _db.SaveChangesAsync();
-                Message = "Extended by 1 month and payment recorded.";
-            }
-            else
-            {
-                Message = "Extended by 1 month.";
-            }
+                UserId = userId,
+                Amount = charge,
+                Note = "Extension 1 month",
+                PaidOn = DateTime.UtcNow
+            });
+            await _db.SaveChangesAsync();
+            Message = "Extended by 1 month. Payment recorded: " + charge.ToString("0.00");
         }
         await LoadUsersAsync();
         return Page();
