@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div id="bg-glow"></div>
     <header>
         <div class="brand">DataSearch <span>records search platform</span></div>
         <div class="user">
@@ -26,15 +25,6 @@
     <main>
         @RenderBody()
     </main>
-    <script>
-        (function(){
-            var glow = document.getElementById('bg-glow');
-            window.addEventListener('mousemove', function(e){
-                glow.style.setProperty('--mx', e.clientX + 'px');
-                glow.style.setProperty('--my', e.clientY + 'px');
-            });
-        })();
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
