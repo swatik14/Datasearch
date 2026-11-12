@@ -17,6 +17,13 @@ public class AdminModel : PageModel
     public List<ApplicationUser> Users { get; set; } = new();
     public Dictionary<string, decimal> TotalPaid { get; set; } = new();
     [BindProperty(SupportsGet = true)] public string? ViewId { get; set; }
+    [BindProperty(SupportsGet = true)] public string? Query { get; set; }
+    [BindProperty(SupportsGet = true)] public string TypeFilter { get; set; } = "All";
+    [BindProperty(SupportsGet = true)] public string StatusFilter { get; set; } = "All";
+    public int TotalCustomers { get; set; }
+    public int TotalAgencies { get; set; }
+    public int ActiveCount { get; set; }
+    public int InactiveCount { get; set; }
     public ApplicationUser? SelectedUser { get; set; }
     public List<Payment> SelectedPayments { get; set; } = new();
     [BindProperty] public NewUserInput NewUser { get; set; } = new();
@@ -41,7 +48,27 @@ public class AdminModel : PageModel
 
     private async Task LoadUsersAsync()
     {
-        Users = _um.Users.OrderBy(u => u.UserName).ToList();
+        var all = _um.Users.Where(u => u.Role != "Admin").OrderBy(u => u.UserName).ToList();
+        TotalCustomers = all.Count(u => u.Role == "Customer");
+        TotalAgencies = all.Count(u => u.Role == "Agency");
+        ActiveCount = all.Count(u => u.IsActive);
+        InactiveCount = all.Count(u => !u.IsActive);
+
+        var filtered = all.AsEnumerable();
+        if (!string.IsNullOrWhiteSpace(TypeFilter) && TypeFilter != "All")
+            filtered = filtered.Where(u => u.Role == TypeFilter);
+        if (!string.IsNullOrWhiteSpace(StatusFilter) && StatusFilter != "All")
+            filtered = filtered.Where(u => StatusFilter == "Active" ? u.IsActive : !u.IsActive);
+        if (!string.IsNullOrWhiteSpace(Query))
+        {
+            var q = Query.Trim().ToLower();
+            filtered = filtered.Where(u =>
+                (u.UserName ?? "").ToLower().Contains(q) ||
+                (u.FullName ?? "").ToLower().Contains(q) ||
+                (u.Plan ?? "").ToLower().Contains(q));
+        }
+        Users = filtered.ToList();
+
         var ids = Users.Select(u => u.Id).ToList();
         var payments = await _db.Payments.Where(p => ids.Contains(p.UserId)).ToListAsync();
         TotalPaid = payments.GroupBy(p => p.UserId).ToDictionary(g => g.Key, g => g.Sum(p => p.Amount));

@@ -1,8 +1,73 @@
 @page
 @model DataSearch.Pages.AdminModel
 @attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-<h2>Admin - Users & Subscriptions</h2>
+<h2>Admin Dashboard</h2>
 @if (!string.IsNullOrEmpty(Model.Message)) { <div class="msg">@Model.Message</div> }
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px;">
+    <div class="card" style="padding:16px;">
+        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Customers</div>
+        <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalCustomers</div>
+    </div>
+    <div class="card" style="padding:16px;">
+        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Agencies</div>
+        <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalAgencies</div>
+    </div>
+    <div class="card" style="padding:16px;">
+        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Active</div>
+        <div style="font-size:26px;font-weight:700;color:#059669;">@Model.ActiveCount</div>
+    </div>
+    <div class="card" style="padding:16px;">
+        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Inactive</div>
+        <div style="font-size:26px;font-weight:700;color:#dc2626;">@Model.InactiveCount</div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:18px;">
+    <h3 style="margin-top:0;">Search Customers & Agencies</h3>
+    <form method="get">
+        <div class="search-bar">
+            <div class="search-field" style="min-width:220px;">
+                <label>Search</label>
+                <input type="text" name="Query" value="@Model.Query" placeholder="Name, username, plan..." />
+            </div>
+            <div class="search-field">
+                <label>Type</label>
+                <select name="TypeFilter">
+                    @foreach (var opt in new[] { "All", "Customer", "Agency" })
+                    {
+                        if (Model.TypeFilter == opt)
+                        {
+                            <option value="@opt" selected>@opt</option>
+                        }
+                        else
+                        {
+                            <option value="@opt">@opt</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="search-field">
+                <label>Status</label>
+                <select name="StatusFilter">
+                    @foreach (var opt in new[] { "All", "Active", "Inactive" })
+                    {
+                        if (Model.StatusFilter == opt)
+                        {
+                            <option value="@opt" selected>@opt</option>
+                        }
+                        else
+                        {
+                            <option value="@opt">@opt</option>
+                        }
+                    }
+                </select>
+            </div>
+            <button type="submit">Filter</button>
+            <a href="/Admin" class="btn" style="background:#475569;text-decoration:none;">Reset</a>
+        </div>
+    </form>
+</div>
 
 <div class="card" style="margin-bottom:18px;">
     <h3 style="margin-top:0;">Add User / Agency</h3>
