@@ -36,6 +36,7 @@ public class SearchModel : PageModel
         var user = await _um.GetUserAsync(User);
         if (user == null) { Message = "Not logged in."; return false; }
         if (user.Role == "Admin") return true;
+        if (!user.IsActive) { Message = "Account deactivated. Contact admin."; return false; }
         if (user.SubscriptionExpiry == null || user.SubscriptionExpiry < DateTime.UtcNow)
         {
             Message = "Subscription expired. Please renew.";

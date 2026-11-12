@@ -1,0 +1,62 @@
+@page
+@model DataSearch.Pages.AdminModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+<h2>Admin - Users & Subscriptions</h2>
+@if (!string.IsNullOrEmpty(Model.Message)) { <div class="msg">@Model.Message</div> }
+
+<div class="card" style="margin-bottom:18px;">
+    <h3 style="margin-top:0;">Add User / Agency</h3>
+    <form method="post" asp-page-handler="Create">
+        <div class="search-bar">
+            <div class="search-field"><label>Username</label><input asp-for="NewUser.UserName" required /></div>
+            <div class="search-field"><label>Full Name</label><input asp-for="NewUser.FullName" /></div>
+            <div class="search-field"><label>Password</label><input asp-for="NewUser.Password" type="password" required /></div>
+            <div class="search-field">
+                <label>Type</label>
+                <select asp-for="NewUser.Type">
+                    <option value="Customer">Customer</option>
+                    <option value="Agency">Agency</option>
+                </select>
+            </div>
+            <div class="search-field">
+                <label>Plan</label>
+                <select asp-for="NewUser.Plan">
+                    <option value="Monthly">Monthly</option>
+                    <option value="Yearly">Yearly</option>
+                </select>
+            </div>
+            <button type="submit">Create</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Active</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var u in Model.Users)
+        {
+            <tr>
+                <td>@u.UserName</td>
+                <td>@u.FullName</td>
+                <td>@u.Role</td>
+                <td>@u.Plan</td>
+                <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
+                <td>@(u.IsActive ? "Yes" : "No")</td>
+                <td>
+                    <form method="post" asp-page-handler="Toggle" style="display:inline;">
+                        <input type="hidden" name="userId" value="@u.Id" />
+                        <button type="submit">@(u.IsActive ? "Deactivate" : "Reactivate")</button>
+                    </form>
+                    <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
+                        <input type="hidden" name="userId" value="@u.Id" />
+                        <button type="submit" style="background:#475569;">+1 Month</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

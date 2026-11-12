@@ -12,6 +12,7 @@
         <div class="user">
             @if (User.Identity?.IsAuthenticated == true)
             {
+                @if (User.IsInRole("Admin")) { <a href="/Admin">Admin</a> }
                 <span>@User.Identity.Name</span>
                 <a href="/Logout">Logout</a>
             }

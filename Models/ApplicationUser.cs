@@ -8,4 +8,5 @@ public class ApplicationUser : IdentityUser
     public string Role { get; set; } = "Customer"; // Customer / Agency / Admin
     public DateTime? SubscriptionExpiry { get; set; }
     public string Plan { get; set; } = "Free";
+    public bool IsActive { get; set; } = true;
 }
