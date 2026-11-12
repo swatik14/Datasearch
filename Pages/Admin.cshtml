@@ -107,7 +107,7 @@
                 <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.UserName</a></td>
                 <td>@u.FullName</td>
                 <td>@u.Role</td>
-                <td>@u.Plan</td>
+                <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.Plan</a></td>
                 <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
                 <td>@(Model.TotalPaid.ContainsKey(u.Id) ? Model.TotalPaid[u.Id].ToString("0.00") : "0.00")</td>
                 <td>
@@ -163,6 +163,28 @@
             <div><strong>Status:</strong> @(Model.SelectedUser.IsActive ? "Active" : "Inactive")</div>
             <div><strong>Total Paid:</strong> @(Model.TotalPaid.ContainsKey(Model.SelectedUser.Id) ? Model.TotalPaid[Model.SelectedUser.Id].ToString("0.00") : "0.00")</div>
         </div>
+        <h4 style="margin-top:16px;">Monthly Plan History</h4>
+        @if (Model.SelectedPayments.Any())
+        {
+            <table>
+                <thead><tr><th>Month</th><th>Total Paid</th><th>Payments</th></tr></thead>
+                <tbody>
+                @foreach (var g in Model.SelectedPayments.GroupBy(p => p.PaidOn.ToString("yyyy-MM")).OrderByDescending(g => g.Key))
+                {
+                    <tr>
+                        <td>@g.Key</td>
+                        <td>@g.Sum(p => p.Amount).ToString("0.00")</td>
+                        <td>@g.Count()</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="meta">No monthly plan records.</p>
+        }
+
         <h4 style="margin-top:16px;">Payment History</h4>
         @if (Model.SelectedPayments.Any())
         {
