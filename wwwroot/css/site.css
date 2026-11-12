@@ -139,3 +139,15 @@ tr:hover td { background: #e0f2fe; }
 .auth-btn { width: 100%; margin-top: 6px; padding: 12px; font-size: 15px; }
 .auth-foot { margin-top: 18px; font-size: 14px; color: var(--muted); }
 .auth-foot a { color: var(--primary); font-weight: 600; text-decoration: none; }
+.admin-shell { display: flex; gap: 20px; align-items: flex-start; }
+.sidebar { width: 210px; flex: 0 0 210px; background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 4px 18px rgba(15,23,42,.08); border: 1px solid #e2e8f0; position: sticky; top: 84px; }
+.sidebar h4 { margin: 0 0 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+.sidebar a { display: block; padding: 10px 12px; border-radius: 8px; color: #0c4a6e; text-decoration: none; font-weight: 600; font-size: 14px; margin-bottom: 4px; transition: background .15s; }
+.sidebar a:hover { background: #e0f2fe; }
+.sidebar a.active { background: var(--primary); color: #fff; }
+.sidebar a.active:hover { background: var(--primary-dark); }
+.admin-main { flex: 1; min-width: 0; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab { padding: 8px 16px; border-radius: 8px; background: #e2e8f0; color: #0c4a6e; text-decoration: none; font-weight: 600; font-size: 13px; transition: background .15s; }
+.tab:hover { background: #bae6fd; }
+.tab.active { background: var(--primary); color: #fff; }

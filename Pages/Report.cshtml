@@ -2,44 +2,56 @@
 @model DataSearch.Pages.ReportModel
 @attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
 <h2>Payment Report</h2>
-<div class="card" style="margin-bottom:18px;">
-    <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <div><strong>Total Collected:</strong> @Model.GrandTotal.ToString("0.00")</div>
-        <div><strong>Total Payments:</strong> @Model.Payments.Count</div>
+<div class="admin-shell">
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <a href="/Admin">All Users</a>
+        <a href="/Admin?TypeFilter=Customer">Customers</a>
+        <a href="/Admin?TypeFilter=Agency">Agencies</a>
+        <a href="/Admin?StatusFilter=Inactive">Inactive</a>
+        <a href="/Report" class="active">Reports</a>
+    </aside>
+    <div class="admin-main">
+        <div class="card" style="margin-bottom:18px;">
+            <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                <div><strong>Total Collected:</strong> @Model.GrandTotal.ToString("0.00")</div>
+                <div><strong>Total Payments:</strong> @Model.Payments.Count</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px;">
+            <h3 style="margin-top:0;">Monthly Summary</h3>
+            <table>
+                <thead><tr><th>Month</th><th>Total Amount</th><th>Payments</th></tr></thead>
+                <tbody>
+                @foreach (var kv in Model.MonthlyTotals.OrderByDescending(x => x.Key))
+                {
+                    <tr>
+                        <td>@kv.Key</td>
+                        <td>@kv.Value.ToString("0.00")</td>
+                        <td>@Model.Payments.Count(p => p.PaidOn.ToString("yyyy-MM") == kv.Key)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top:0;">Paid List</h3>
+            <table>
+                <thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Note</th></tr></thead>
+                <tbody>
+                @foreach (var p in Model.Payments)
+                {
+                    <tr>
+                        <td>@p.PaidOn.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@(p.User?.UserName ?? p.UserId)</td>
+                        <td>@p.Amount.ToString("0.00")</td>
+                        <td>@p.Note</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
-<div class="card" style="margin-bottom:18px;">
-    <h3 style="margin-top:0;">Monthly Summary</h3>
-    <table>
-        <thead><tr><th>Month</th><th>Total Amount</th><th>Payments</th></tr></thead>
-        <tbody>
-        @foreach (var kv in Model.MonthlyTotals.OrderByDescending(x => x.Key))
-        {
-            <tr>
-                <td>@kv.Key</td>
-                <td>@kv.Value.ToString("0.00")</td>
-                <td>@Model.Payments.Count(p => p.PaidOn.ToString("yyyy-MM") == kv.Key)</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-
-<div class="card">
-    <h3 style="margin-top:0;">Paid List</h3>
-    <table>
-        <thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Note</th></tr></thead>
-        <tbody>
-        @foreach (var p in Model.Payments)
-        {
-            <tr>
-                <td>@p.PaidOn.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@(p.User?.UserName ?? p.UserId)</td>
-                <td>@p.Amount.ToString("0.00")</td>
-                <td>@p.Note</td>
-            </tr>
-        }
-        </tbody>
-    </table>
 </div>

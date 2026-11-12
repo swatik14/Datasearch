@@ -1,221 +1,239 @@
 @page
 @model DataSearch.Pages.AdminModel
-@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
 <h2>Admin Dashboard</h2>
 @if (!string.IsNullOrEmpty(Model.Message)) { <div class="msg">@Model.Message</div> }
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px;">
-    <div class="card" style="padding:16px;">
-        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Customers</div>
-        <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalCustomers</div>
-    </div>
-    <div class="card" style="padding:16px;">
-        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Agencies</div>
-        <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalAgencies</div>
-    </div>
-    <div class="card" style="padding:16px;">
-        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Active</div>
-        <div style="font-size:26px;font-weight:700;color:#059669;">@Model.ActiveCount</div>
-    </div>
-    <div class="card" style="padding:16px;">
-        <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Inactive</div>
-        <div style="font-size:26px;font-weight:700;color:#dc2626;">@Model.InactiveCount</div>
-    </div>
-</div>
-
-<div class="card" style="margin-bottom:18px;">
-    <h3 style="margin-top:0;">Search Customers & Agencies</h3>
-    <form method="get">
-        <div class="search-bar">
-            <div class="search-field" style="min-width:220px;">
-                <label>Search</label>
-                <input type="text" name="Query" value="@Model.Query" placeholder="Name, username, plan..." />
+<div class="admin-shell">
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <a href="/Admin" class="@(string.IsNullOrEmpty(Model.TypeFilter) || Model.TypeFilter=="All" ? "active" : "")">All Users</a>
+        <a href="/Admin?TypeFilter=Customer" class="@(Model.TypeFilter=="Customer" ? "active" : "")">Customers</a>
+        <a href="/Admin?TypeFilter=Agency" class="@(Model.TypeFilter=="Agency" ? "active" : "")">Agencies</a>
+        <a href="/Admin?StatusFilter=Inactive">Inactive</a>
+        <a href="/Report">Reports</a>
+    </aside>
+    <div class="admin-main">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px;">
+            <div class="card" style="padding:16px;">
+                <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Customers</div>
+                <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalCustomers</div>
             </div>
-            <div class="search-field">
-                <label>Type</label>
-                <select name="TypeFilter">
-                    @foreach (var opt in new[] { "All", "Customer", "Agency" })
-                    {
-                        if (Model.TypeFilter == opt)
-                        {
-                            <option value="@opt" selected>@opt</option>
-                        }
-                        else
-                        {
-                            <option value="@opt">@opt</option>
-                        }
-                    }
-                </select>
+            <div class="card" style="padding:16px;">
+                <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Agencies</div>
+                <div style="font-size:26px;font-weight:700;color:var(--primary);">@Model.TotalAgencies</div>
             </div>
-            <div class="search-field">
-                <label>Status</label>
-                <select name="StatusFilter">
-                    @foreach (var opt in new[] { "All", "Active", "Inactive" })
-                    {
-                        if (Model.StatusFilter == opt)
-                        {
-                            <option value="@opt" selected>@opt</option>
-                        }
-                        else
-                        {
-                            <option value="@opt">@opt</option>
-                        }
-                    }
-                </select>
+            <div class="card" style="padding:16px;">
+                <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Active</div>
+                <div style="font-size:26px;font-weight:700;color:#059669;">@Model.ActiveCount</div>
             </div>
-            <button type="submit">Filter</button>
-            <a href="/Admin" class="btn" style="background:#475569;text-decoration:none;">Reset</a>
+            <div class="card" style="padding:16px;">
+                <div style="color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:600;">Inactive</div>
+                <div style="font-size:26px;font-weight:700;color:#dc2626;">@Model.InactiveCount</div>
+            </div>
         </div>
-    </form>
-</div>
 
-<div class="card" style="margin-bottom:18px;">
-    <h3 style="margin-top:0;">Add User / Agency</h3>
-    <form method="post" asp-page-handler="Create">
-        <div class="search-bar">
-            <div class="search-field"><label>Username</label><input asp-for="NewUser.UserName" required /></div>
-            <div class="search-field"><label>Full Name</label><input asp-for="NewUser.FullName" /></div>
-            <div class="search-field"><label>Password</label><input asp-for="NewUser.Password" type="password" required /></div>
-            <div class="search-field">
-                <label>Type</label>
-                <select asp-for="NewUser.Type">
-                    <option value="Customer">Customer</option>
-                    <option value="Agency">Agency</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <label>Plan</label>
-                <select asp-for="NewUser.Plan">
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                </select>
-            </div>
-            <button type="submit">Create</button>
+        <div class="tabs">
+            <a class="tab @(string.IsNullOrEmpty(Model.TypeFilter) || Model.TypeFilter=="All" ? "active" : "")" href="/Admin">All</a>
+            <a class="tab @(Model.TypeFilter=="Customer" ? "active" : "")" href="/Admin?TypeFilter=Customer">Customers</a>
+            <a class="tab @(Model.TypeFilter=="Agency" ? "active" : "")" href="/Admin?TypeFilter=Agency">Agencies</a>
+            <a class="tab @(Model.StatusFilter=="Inactive" ? "active" : "")" href="/Admin?StatusFilter=Inactive">Inactive</a>
         </div>
-    </form>
-</div>
 
-<div class="card">
-    <table>
-        <thead>
-            <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Paid Total</th><th>Active</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-        @foreach (var u in Model.Users)
-        {
-            <tr>
-                <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.UserName</a></td>
-                <td>@u.FullName</td>
-                <td>@u.Role</td>
-                <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.Plan</a></td>
-                <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
-                <td>@(Model.TotalPaid.ContainsKey(u.Id) ? Model.TotalPaid[u.Id].ToString("0.00") : "0.00")</td>
-                <td>
-                    @if (u.IsActive) { <span style="color:#059669;font-weight:600;">Active</span> }
-                    else { <span style="color:#dc2626;font-weight:600;">Inactive</span> }
-                </td>
-                <td>
-                    <form method="post" asp-page-handler="Toggle" style="display:inline;">
-                        <input type="hidden" name="userId" value="@u.Id" />
-                        @if (u.IsActive)
-                        {
-                            <button type="submit" style="background:#dc2626;">Deactivate</button>
-                        }
-                        else
-                        {
-                            <button type="submit" style="background:#059669;">Reactivate</button>
-                        }
-                    </form>
-                    <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
-                        <input type="hidden" name="userId" value="@u.Id" />
-                        <button type="submit" style="background:#475569;">+1 Month (@Model.GetPlanPrice(u.Plan).ToString("0"))</button>
-                    </form>
-                    <form method="post" asp-page-handler="Payment" style="display:inline;margin-left:4px;">
-                        <input type="hidden" name="Payment.UserId" value="@u.Id" />
-                        <input type="number" step="0.01" name="Payment.Amount" placeholder="Amt" style="width:70px;padding:4px;" required />
-                        <button type="submit" style="background:#059669;">Pay</button>
-                    </form>
-                    @if (u.Role != "Admin")
-                    {
-                        <form method="post" asp-page-handler="Delete" style="display:inline;margin-left:4px;" onsubmit="return confirm('Delete this user?');">
-                            <input type="hidden" name="userId" value="@u.Id" />
-                            <button type="submit" style="background:#991b1b;">Delete</button>
-                        </form>
-                    }
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-
-@if (Model.SelectedUser != null)
-{
-    <div class="card" style="margin-top:18px;">
-        <h3 style="margin-top:0;">Customer Details - @Model.SelectedUser.UserName</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;">
-            <div><strong>Full Name:</strong> @Model.SelectedUser.FullName</div>
-            <div><strong>Email:</strong> @Model.SelectedUser.Email</div>
-            <div><strong>Type:</strong> @Model.SelectedUser.Role</div>
-            <div><strong>Plan:</strong> @Model.SelectedUser.Plan</div>
-            <div><strong>Expiry:</strong> @(Model.SelectedUser.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</div>
-            <div><strong>Status:</strong> @(Model.SelectedUser.IsActive ? "Active" : "Inactive")</div>
-            <div><strong>Payment Due:</strong> @(Model.SelectedUser.IsActive && Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry >= DateTime.UtcNow ? "No Due" : "Due")</div>
-            @{
-                var overdueMonths = 0;
-                if (Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry < DateTime.UtcNow)
-                {
-                    overdueMonths = (int)Math.Ceiling((DateTime.UtcNow - Model.SelectedUser.SubscriptionExpiry.Value).TotalDays / 30.0);
-                    if (overdueMonths < 1) overdueMonths = 1;
-                }
-                var dueAmount = overdueMonths * Model.GetPlanPrice(Model.SelectedUser.Plan);
-            }
-            <div><strong>Months Overdue:</strong> @overdueMonths</div>
-            <div><strong>Amount Due:</strong> @dueAmount.ToString("0.00")</div>
-            <div><strong>Total Paid:</strong> @(Model.TotalPaid.ContainsKey(Model.SelectedUser.Id) ? Model.TotalPaid[Model.SelectedUser.Id].ToString("0.00") : "0.00")</div>
+        <div class="card" style="margin-bottom:18px;">
+            <h3 style="margin-top:0;">Search Customers & Agencies</h3>
+            <form method="get">
+                <div class="search-bar">
+                    <div class="search-field" style="min-width:220px;">
+                        <label>Search</label>
+                        <input type="text" name="Query" value="@Model.Query" placeholder="Name, username, plan..." />
+                    </div>
+                    <div class="search-field">
+                        <label>Type</label>
+                        <select name="TypeFilter">
+                            @foreach (var opt in new[] { "All", "Customer", "Agency" })
+                            {
+                                if (Model.TypeFilter == opt)
+                                {
+                                    <option value="@opt" selected>@opt</option>
+                                }
+                                else
+                                {
+                                    <option value="@opt">@opt</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label>Status</label>
+                        <select name="StatusFilter">
+                            @foreach (var opt in new[] { "All", "Active", "Inactive" })
+                            {
+                                if (Model.StatusFilter == opt)
+                                {
+                                    <option value="@opt" selected>@opt</option>
+                                }
+                                else
+                                {
+                                    <option value="@opt">@opt</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <button type="submit">Filter</button>
+                    <a href="/Admin" class="btn" style="background:#475569;text-decoration:none;">Reset</a>
+                </div>
+            </form>
         </div>
-        <h4 style="margin-top:16px;">Monthly Plan History</h4>
-        @if (Model.SelectedPayments.Any())
-        {
+
+        <div class="card" style="margin-bottom:18px;">
+            <h3 style="margin-top:0;">Add User / Agency</h3>
+            <form method="post" asp-page-handler="Create">
+                <div class="search-bar">
+                    <div class="search-field"><label>Username</label><input asp-for="NewUser.UserName" required /></div>
+                    <div class="search-field"><label>Full Name</label><input asp-for="NewUser.FullName" /></div>
+                    <div class="search-field"><label>Password</label><input asp-for="NewUser.Password" type="password" required /></div>
+                    <div class="search-field">
+                        <label>Type</label>
+                        <select asp-for="NewUser.Type">
+                            <option value="Customer">Customer</option>
+                            <option value="Agency">Agency</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label>Plan</label>
+                        <select asp-for="NewUser.Plan">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
             <table>
-                <thead><tr><th>Month</th><th>Total Paid</th><th>Payments</th></tr></thead>
+                <thead>
+                    <tr><th>Username</th><th>Name</th><th>Type</th><th>Plan</th><th>Expiry</th><th>Paid Total</th><th>Active</th><th>Actions</th></tr>
+                </thead>
                 <tbody>
-                @foreach (var g in Model.SelectedPayments.GroupBy(p => p.PaidOn.ToString("yyyy-MM")).OrderByDescending(g => g.Key))
+                @foreach (var u in Model.Users)
                 {
                     <tr>
-                        <td>@g.Key</td>
-                        <td>@g.Sum(p => p.Amount).ToString("0.00")</td>
-                        <td>@g.Count()</td>
+                        <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.UserName</a></td>
+                        <td>@u.FullName</td>
+                        <td>@u.Role</td>
+                        <td><a href="/Admin?ViewId=@u.Id" style="color:var(--primary);font-weight:600;text-decoration:none;">@u.Plan</a></td>
+                        <td>@(u.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</td>
+                        <td>@(Model.TotalPaid.ContainsKey(u.Id) ? Model.TotalPaid[u.Id].ToString("0.00") : "0.00")</td>
+                        <td>
+                            @if (u.IsActive) { <span style="color:#059669;font-weight:600;">Active</span> }
+                            else { <span style="color:#dc2626;font-weight:600;">Inactive</span> }
+                        </td>
+                        <td>
+                            <form method="post" asp-page-handler="Toggle" style="display:inline;">
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                @if (u.IsActive)
+                                {
+                                    <button type="submit" style="background:#dc2626;">Deactivate</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" style="background:#059669;">Reactivate</button>
+                                }
+                            </form>
+                            <form method="post" asp-page-handler="Extend" style="display:inline;margin-left:4px;">
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                <button type="submit" style="background:#475569;">+1 Month (@Model.GetPlanPrice(u.Plan).ToString("0"))</button>
+                            </form>
+                            <form method="post" asp-page-handler="Payment" style="display:inline;margin-left:4px;">
+                                <input type="hidden" name="Payment.UserId" value="@u.Id" />
+                                <input type="number" step="0.01" name="Payment.Amount" placeholder="Amt" style="width:70px;padding:4px;" required />
+                                <button type="submit" style="background:#059669;">Pay</button>
+                            </form>
+                            @if (u.Role != "Admin")
+                            {
+                                <form method="post" asp-page-handler="Delete" style="display:inline;margin-left:4px;" onsubmit="return confirm('Delete this user?');">
+                                    <input type="hidden" name="userId" value="@u.Id" />
+                                    <button type="submit" style="background:#991b1b;">Delete</button>
+                                </form>
+                            }
+                        </td>
                     </tr>
                 }
                 </tbody>
             </table>
-        }
-        else
-        {
-            <p class="meta">No monthly plan records.</p>
-        }
+        </div>
 
-        <h4 style="margin-top:16px;">Payment History</h4>
-        @if (Model.SelectedPayments.Any())
+        @if (Model.SelectedUser != null)
         {
-            <table>
-                <thead><tr><th>Date</th><th>Amount</th><th>Note</th></tr></thead>
-                <tbody>
-                @foreach (var p in Model.SelectedPayments)
+            <div class="card" style="margin-top:18px;">
+                <h3 style="margin-top:0;">Customer Details - @Model.SelectedUser.UserName</h3>
+                <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;">
+                    <div><strong>Full Name:</strong> @Model.SelectedUser.FullName</div>
+                    <div><strong>Email:</strong> @Model.SelectedUser.Email</div>
+                    <div><strong>Type:</strong> @Model.SelectedUser.Role</div>
+                    <div><strong>Plan:</strong> @Model.SelectedUser.Plan</div>
+                    <div><strong>Expiry:</strong> @(Model.SelectedUser.SubscriptionExpiry?.ToString("yyyy-MM-dd") ?? "-")</div>
+                    <div><strong>Status:</strong> @(Model.SelectedUser.IsActive ? "Active" : "Inactive")</div>
+                    <div><strong>Payment Due:</strong> @(Model.SelectedUser.IsActive && Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry >= DateTime.UtcNow ? "No Due" : "Due")</div>
+                    @{
+                        var overdueMonths = 0;
+                        if (Model.SelectedUser.SubscriptionExpiry.HasValue && Model.SelectedUser.SubscriptionExpiry < DateTime.UtcNow)
+                        {
+                            overdueMonths = (int)Math.Ceiling((DateTime.UtcNow - Model.SelectedUser.SubscriptionExpiry.Value).TotalDays / 30.0);
+                            if (overdueMonths < 1) overdueMonths = 1;
+                        }
+                        var dueAmount = overdueMonths * Model.GetPlanPrice(Model.SelectedUser.Plan);
+                    }
+                    <div><strong>Months Overdue:</strong> @overdueMonths</div>
+                    <div><strong>Amount Due:</strong> @dueAmount.ToString("0.00")</div>
+                    <div><strong>Total Paid:</strong> @(Model.TotalPaid.ContainsKey(Model.SelectedUser.Id) ? Model.TotalPaid[Model.SelectedUser.Id].ToString("0.00") : "0.00")</div>
+                </div>
+                <h4 style="margin-top:16px;">Monthly Plan History</h4>
+                @if (Model.SelectedPayments.Any())
                 {
-                    <tr>
-                        <td>@p.PaidOn.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>@p.Amount.ToString("0.00")</td>
-                        <td>@p.Note</td>
-                    </tr>
+                    <table>
+                        <thead><tr><th>Month</th><th>Total Paid</th><th>Payments</th></tr></thead>
+                        <tbody>
+                        @foreach (var g in Model.SelectedPayments.GroupBy(p => p.PaidOn.ToString("yyyy-MM")).OrderByDescending(g => g.Key))
+                        {
+                            <tr>
+                                <td>@g.Key</td>
+                                <td>@g.Sum(p => p.Amount).ToString("0.00")</td>
+                                <td>@g.Count()</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p class="meta">No payments recorded.</p>
+                else
+                {
+                    <p class="meta">No monthly plan records.</p>
+                }
+
+                <h4 style="margin-top:16px;">Payment History</h4>
+                @if (Model.SelectedPayments.Any())
+                {
+                    <table>
+                        <thead><tr><th>Date</th><th>Amount</th><th>Note</th></tr></thead>
+                        <tbody>
+                        @foreach (var p in Model.SelectedPayments)
+                        {
+                            <tr>
+                                <td>@p.PaidOn.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@p.Amount.ToString("0.00")</td>
+                                <td>@p.Note</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="meta">No payments recorded.</p>
+                }
+            </div>
         }
     </div>
-}
+</div>
